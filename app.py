@@ -4,7 +4,7 @@ from urllib.parse import urlparse, quote
 
 from flask import Flask, request, jsonify, send_from_directory, Response, stream_with_context
 
-from pinterest_downloader import Pinterest
+from pinterest import Pinterest
 
 app = Flask(__name__)
 client = Pinterest(timeout=30)
@@ -44,10 +44,6 @@ def path_segments(value):
 
 
 def classify_input(value):
-    """Decide which library call a given input should route to.
-
-    Returns one of: "pin", "board", "profile", "search".
-    """
     value = value.strip()
 
     if PIN_ID_RE.search(value) or re.fullmatch(r"\d+", value):
@@ -67,7 +63,6 @@ def classify_input(value):
 
 
 def simplify_pin(pin):
-    """Flatten a library pin object into only what the UI needs."""
     images = pin.get("images") or {}
     thumbnail = None
     for size_key in ["474x", "236x", "736x", "170x"]:
@@ -110,6 +105,11 @@ def simplify_pin(pin):
 @app.route("/")
 def index():
     return send_from_directory(app.static_folder or "static", "index.html")
+
+
+@app.route("/asset/<path:filename>")
+def serve_asset(filename):
+    return send_from_directory(os.path.join(app.static_folder or "static", "asset"), filename)
 
 
 @app.route("/api/resolve", methods=["POST"])
