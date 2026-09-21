@@ -21,7 +21,7 @@ A web application for downloading Pinterest pins, boards, and search results.
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/PinterestDownloader.git
+git clone https://github.com/raihan-rifat007/PinterestDownloader.git
 cd PinterestDownloader
 ```
 
