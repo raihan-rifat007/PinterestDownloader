@@ -4,7 +4,7 @@ from urllib.parse import urlparse, quote
 
 from flask import Flask, request, jsonify, send_from_directory, Response, stream_with_context
 
-from pinterest import Pinterest
+from pinterest_downloader import Pinterest
 
 app = Flask(__name__)
 client = Pinterest(timeout=30)
