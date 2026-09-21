@@ -139,9 +139,9 @@ class Pinterest:
             return False, error or "Unknown error"
         return True, resource_response
 
-    # ------------------------------------------------------------------
-    # Pin parsing (shared by search() and get_pin())
-    # ------------------------------------------------------------------
+
+
+
     def _parse_pin(self, pin_data, source_url=None):
         if not isinstance(pin_data, dict):
             return None
@@ -324,9 +324,9 @@ class Pinterest:
 
         return pin_obj
 
-    # ------------------------------------------------------------------
-    # Search
-    # ------------------------------------------------------------------
+
+
+
     def search(self, query, page_size=25, bookmark=None, scope="pins"):
         """Search for pins (scope="pins") or videos (scope="videos")."""
         if scope == "boards":
@@ -377,9 +377,9 @@ class Pinterest:
                 break
         return {"ok": True, "query": query, "total": len(all_pins), "pins": all_pins}
 
-    # ------------------------------------------------------------------
-    # Profiles & boards (HTML profile page + resource API fallbacks)
-    # ------------------------------------------------------------------
+
+
+
     def _fetch_profile_page(self, username):
         """Fetch a profile page and pull the embedded user + boards data.
 
@@ -548,8 +548,8 @@ class Pinterest:
                 return {"ok": False, "error": {"message": "User not found"}}
 
         if not board:
-            # Board wasn't in the profile page's embedded list (large accounts).
-            # Try resolving it directly by owner slug.
+
+
             ok, resource_response = self._api(
                 "BoardResource/get",
                 {"slug": board_slug, "username": username, "field_set_key": "board"},
@@ -591,9 +591,9 @@ class Pinterest:
             "boards": boards
         })
 
-    # ------------------------------------------------------------------
-    # Board search & feeds
-    # ------------------------------------------------------------------
+
+
+
     def _parse_board(self, board_data):
         """Parse a board dict (e.g. from search results) into a clean board."""
         if not isinstance(board_data, dict):
@@ -798,9 +798,9 @@ class Pinterest:
             "pins": pins
         })
 
-    # ------------------------------------------------------------------
-    # Media downloads
-    # ------------------------------------------------------------------
+
+
+
     def _download_file(self, url, dest_dir, filename):
         try:
             os.makedirs(dest_dir, exist_ok=True)
@@ -900,9 +900,9 @@ class Pinterest:
             "files": files
         })
 
-    # ------------------------------------------------------------------
-    # Single pin
-    # ------------------------------------------------------------------
+
+
+
     def get_pin(self, url):
         pin_id = None
         m = re.search(r"/pin/(\d+)", str(url))
@@ -911,9 +911,9 @@ class Pinterest:
         elif re.fullmatch(r"\d+", str(url).strip()):
             pin_id = str(url).strip()
         else:
-            # Resolve short links (pin.it) and other redirects.
-            # Prefer HEAD; fall back to GET when HEAD does not yield a pin path
-            # (some pin.it responses behave differently on HEAD vs GET).
+
+
+
             for method in ("head", "get"):
                 try:
                     resp = getattr(self.session, method)(
