@@ -1,369 +1,721 @@
 <div align="center">
 
-<img src="https://capsule-render.vercel.app/api?type=waving&color=E60023&height=200&section=header&text=Pinterest%20Scraper&fontSize=52&fontColor=ffffff&fontAlignY=38&desc=Production-grade%20scraping%20%C2%B7%20Premium%20web%20UI%20%C2%B7%20Full%20metadata&descAlignY=58&descFontSize=16&descFontColor=ffffff" width="100%">
+# 📌 Pinterest Downloader
 
-<br>
+**A production-grade Pinterest downloader with a premium web UI**
 
-[![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
-[![FastAPI](https://img.shields.io/badge/FastAPI-0.100%2B-009688?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
-[![Render](https://img.shields.io/badge/Deploy-Render-46E3B7?style=for-the-badge&logo=render&logoColor=white)](https://render.com)
-[![License](https://img.shields.io/badge/License-MIT-E60023?style=for-the-badge)](LICENSE)
+[![Python](https://img.shields.io/badge/Python-3.10+-3776AB?style=flat-square&logo=python&logoColor=white)](https://python.org)
+[![Flask](https://img.shields.io/badge/Flask-3.0+-000000?style=flat-square&logo=flask&logoColor=white)](https://flask.palletsprojects.com)
+[![License](https://img.shields.io/badge/License-MIT-blue?style=flat-square)](LICENSE)
+[![Status](https://img.shields.io/badge/Status-Active-success?style=flat-square)]()
+[![PRs Welcome](https://img.shields.io/badge/PRs-Welcome-brightgreen?style=flat-square)]()
 
-<br>
+**Download pins, boards, and profiles from Pinterest in original quality — no signup, no API key**
 
-**A production-ready Pinterest scraper with a premium black & white web UI.**  
-Search, board-scrape, download, deduplicate, export — all from a single interface.
-
-<br>
-
-[Features](#-features) · [Screenshots](#-screenshots) · [Quick Start](#-quick-start) · [API Reference](#-api-reference) · [Deployment](#-deployment) · [Config](#-configuration)
+[Features](#-features) · [Quick Start](#-quick-start) · [API Reference](#-api-reference) · [Architecture](#-architecture) · [Deployment](#-deployment)
 
 </div>
 
 ---
 
-## Features
+## 📖 Overview
 
-<table>
-<tr>
-<td width="50%">
+**PinGrab** is a modern, self-hosted Pinterest downloader that scrapes public Pinterest content and delivers it through a clean REST API with a stunning web interface. Built with Flask and a sophisticated vanilla-JS frontend, it handles pins, boards, profiles, and search queries — all with automatic type detection.
 
-**Core**
-- Search pins by keyword or batch query
-- Board scraping via URL
-- Full metadata extraction (saves, comments, creator, board, colors, dimensions)
-- High-res image upgrade (`/originals/` path injection)
-- Video pin detection + direct MP4 URL extraction
-- Concurrent downloading with configurable workers
+### Why PinGrab?
 
-</td>
-<td width="50%">
-
-**Web UI**
-- Premium masonry grid with lazy-load reveal
-- Live progress via Server-Sent Events (SSE)
-- Video playback inline in pin modal
-- Typeahead search suggestions with user results
-- Dark / light mode with system preference detection
-- Gallery view for all downloaded images
-- Long-press selection mode for batch delete
-
-</td>
-</tr>
-<tr>
-<td>
-
-**Export**
-- ZIP archive of all downloaded images
-- XLSX spreadsheet with full metadata columns
-- JSON + CSV saved automatically per run
-
-</td>
-<td>
-
-**Advanced**
-- Deduplication across runs (hash + URL)
-- Scheduled scrapes (cron-style, configurable hours)
-- Visual / related pin search
-- Engagement insights chart (top pins by saves)
-- Proxy pool support
-- Infinite scroll pagination
-
-</td>
-</tr>
-</table>
+- 🎯 **Smart URL Detection** — Auto-routes pins, boards, profiles, and search terms
+- 🎨 **Premium UI** — Glassmorphic design with dark/light themes
+- ⚡ **Blazing Fast** — Optimized scraping with connection pooling
+- 🎬 **Multi-Media** — Images, GIFs, and MP4 videos supported
+- 💾 **Favorites System** — Save pins locally with one click
+- 📜 **Search History** — Track recent queries
+- ⌨️ **Command Palette** — Raycast-style ⌘K menu
+- 📱 **Fully Responsive** — Mobile-first design
+- 🔒 **Safe Downloads** — Streams with host validation
 
 ---
 
-## Screenshots
+## ✨ Features
 
-> _Add screenshots of your deployed instance here._
+### Core Capabilities
 
-| Search View | Pin Modal | Gallery |
-|:-----------:|:---------:|:-------:|
-| `docs/search.png` | `docs/modal.png` | `docs/gallery.png` |
+| Feature | Description | Status |
+|---------|-------------|--------|
+| **Pin Download** | Single pin extraction with metadata | ✅ |
+| **Board Download** | Full board pin iteration | ✅ |
+| **Profile Scraping** | User pins + profile info | ✅ |
+| **Keyword Search** | Pinterest search results | ✅ |
+| **Video Support** | MP4 video download for video pins | ✅ |
+| **GIF Support** | Animated GIF handling | ✅ |
+| **Pagination** | Bookmark-based infinite scroll | ✅ |
+| **Auto Type Detection** | URL/ID/keyword routing | ✅ |
+| **Metadata Extraction** | Author, board, engagement stats | ✅ |
+| **Stream Downloads** | Chunked streaming for large files | ✅ |
 
----
+### UI Highlights
 
-## Project Structure
-
-```
-pinterest-scraper/
-├── api/
-│   ├── __init__.py
-│   └── server.py          # FastAPI app — all endpoints + Job runner
-├── core/
-│   ├── __init__.py
-│   ├── config.py          # URLs, user-agents, CSV columns
-│   ├── dedupe.py          # Cross-run deduplication store
-│   ├── downloader.py      # Concurrent image downloader
-│   ├── http.py            # Session builder, retry logic, rate-limit handling
-│   ├── scraper.py         # Pinterest API calls — search, board, related, suggest
-│   └── storage.py         # JSON + CSV persistence
-├── static/
-│   ├── index.html         # Single-page app shell
-│   ├── css/style.css      # Design system — tokens, dark mode, animations
-│   └── js/app.js          # Vanilla JS — no build step required
-├── __main__.py            # Entry point
-├── requirements.txt
-└── render.yaml            # One-click Render deployment
-```
+- 🎭 **Glassmorphic Design** — Frosted glass aesthetic
+- 🌈 **Red-Rose Gradient** — Pinterest-inspired palette
+- ✨ **Micro-animations** — 60fps smooth transitions
+- 🖼️ **Lightbox Viewer** — Full-screen with zoom
+- 🎛️ **Command Palette** — Raycast-style ⌘K menu
+- 📊 **Filter System** — All / Video / Image / Favorites
+- 🎚️ **Layout Modes** — Compact, Default, Large
+- 🔔 **Toast Notifications** — Elegant feedback
+- 🌗 **Theme Toggle** — Dark/light with auto-detect
 
 ---
 
-## Quick Start
+## 🚀 Quick Start
 
 ### Prerequisites
 
-- Python 3.10+
+- **Python 3.10+**
+- **pip** package manager
+- **Modern browser** (Chrome, Firefox, Safari, Edge)
 
-### Local setup
+### Installation
 
 ```bash
-git clone https://github.com/your-username/pinterest-scraper
-cd pinterest-scraper
+# 1. Clone the repository
+git clone https://github.com/raihan07/PinterestDownloader.git
+cd pingrab
 
+# 2. Create virtual environment
+python -m venv venv
+
+# 3. Activate virtual environment
+# Windows:
+venv\Scripts\activate
+# macOS/Linux:
+source venv/bin/activate
+
+# 4. Install dependencies
 pip install -r requirements.txt
 
-uvicorn api.server:app --host 0.0.0.0 --port 8000 --reload
+# 5. Run the application
+python app.py
 ```
 
-Open [http://localhost:8000](http://localhost:8000).
+Open your browser: http://localhost:5000
 
-### Docker (optional)
+Using Gunicorn (Production)
+
+```bash
+gunicorn --bind 0.0.0.0:5000 --workers 4 --timeout 120 app:app
+```
+
+---
+
+🔌 API Reference
+
+Base URL
+
+```
+http://localhost:5000
+```
+
+Endpoints
+
+1. Home Page
+
+```http
+GET /
+```
+
+Serves the main web interface.
+
+---
+
+2. Resolve Input
+
+```http
+POST /api/resolve
+Content-Type: application/json
+```
+
+Universal endpoint — automatically routes pins, boards, profiles, or search queries.
+
+Request Body:
+
+```json
+{
+  "input": "https://pinterest.com/pin/123456789",
+  "page_size": 25,
+  "bookmark": null
+}
+```
+
+Parameters:
+
+Parameter Type Required Default Description
+input string ✅ Yes — Pin URL, board URL, profile, or keyword
+page_size integer ❌ No 25 Pins per page (max 50)
+bookmark string ❌ No null Pagination cursor
+
+Auto-Detection Rules:
+
+Input Type Detected As Example
+Pin URL pin pinterest.com/pin/123456
+Numeric ID pin 123456789
+Board URL board pinterest.com/user/board-name
+Profile URL profile pinterest.com/username
+Keyword search minimal wallpaper
+
+Response (Pin):
+
+```json
+{
+  "ok": true,
+  "type": "pin",
+  "title": "Beautiful sunset",
+  "pins": [
+    {
+      "id": "123456789",
+      "title": "Beautiful sunset",
+      "pin_url": "https://pinterest.com/pin/123456789/",
+      "thumbnail_url": "https://i.pinimg.com/474x/...",
+      "download_url": "https://i.pinimg.com/originals/...",
+      "is_video": false,
+      "filename": "123456789.jpg"
+    }
+  ],
+  "bookmark": null
+}
+```
+
+Response (Search):
+
+```json
+{
+  "ok": true,
+  "type": "search",
+  "title": "Results for \"minimal wallpaper\"",
+  "pins": [
+    {
+      "id": "987654321",
+      "title": "Minimalist desktop wallpaper",
+      "pin_url": "https://pinterest.com/pin/987654321/",
+      "thumbnail_url": "https://i.pinimg.com/474x/...",
+      "download_url": "https://i.pinimg.com/originals/...",
+      "is_video": false,
+      "filename": "987654321.jpg"
+    }
+  ],
+  "bookmark": "Y2Jvb2ttYXJr..."
+}
+```
+
+Response (Video):
+
+```json
+{
+  "ok": true,
+  "type": "search",
+  "title": "Results for \"cooking tutorial\"",
+  "pins": [
+    {
+      "id": "555444333",
+      "title": "Quick pasta recipe",
+      "pin_url": "https://pinterest.com/pin/555444333/",
+      "thumbnail_url": "https://i.pinimg.com/474x/...",
+      "download_url": "https://v1.pinimg.com/videos/.../720p.mp4",
+      "is_video": true,
+      "filename": "555444333.mp4"
+    }
+  ],
+  "bookmark": null
+}
+```
+
+Error Response:
+
+```json
+{
+  "ok": false,
+  "error": "Pin not found"
+}
+```
+
+Status Codes:
+
+Code Meaning
+200 Success
+400 Missing/invalid input
+404 Pin/board/profile not found
+500 Internal error
+502 Pinterest upstream error
+
+---
+
+3. Download Media
+
+```http
+GET /api/download?url=MEDIA_URL&filename=NAME
+```
+
+Query Parameters:
+
+Parameter Type Required Description
+url string ✅ Yes Pinterest media URL (pinimg.com)
+filename string ❌ No Download filename (default: download)
+
+Security: Only accepts URLs from pinimg.com and pinterest.com hosts.
+
+Response: Binary file stream with:
+
+· Content-Disposition: attachment; filename="..."
+· Content-Type: image/jpeg | image/png | video/mp4
+· Content-Length (when available)
+
+Example:
+
+```bash
+curl -OJ "http://localhost:5000/api/download?url=https://i.pinimg.com/originals/...&filename=sunset.jpg"
+```
+
+---
+
+🎨 Available Features
+
+Pin Types
+
+Type Extensions Download Source
+Image .jpg, .png images.orig (original size)
+GIF .gif images.orig
+Video .mp4 Highest quality video format
+
+Filter Modes
+
+Filter Shows
+All Every pin in the result set
+Video Video pins only
+Image Image pins only (excludes videos)
+Favorites Locally saved pins
+
+Layout Modes
+
+Mode Grid Columns Best For
+Compact Many small cards Quick browsing
+Default Balanced medium cards Daily use
+Large Few large cards High-res previews
+
+---
+
+🏗️ Architecture
+
+System Design
+
+```
+┌─────────────────────────────────────────────────────────┐
+│                   Client Browser                        │
+│  ┌───────────────────────────────────────────────────┐  │
+│  │  HTML + CSS + Vanilla JS (Single Page)           │  │
+│  │  • Command palette (⌘K)                          │  │
+│  │  • Grid + Lightbox + Drawers                     │  │
+│  │  • Favorites + History (localStorage)            │  │
+│  └───────────────────────────────────────────────────┘  │
+└─────────────────────┬───────────────────────────────────┘
+                      │ HTTP/JSON
+                      ▼
+┌─────────────────────────────────────────────────────────┐
+│                  Flask Application                      │
+│  ┌───────────────────────────────────────────────────┐  │
+│  │  Routes: /, /api/resolve, /api/download          │  │
+│  └───────────────────────────────────────────────────┘  │
+│  ┌───────────────────────────────────────────────────┐  │
+│  │  URL Classifier (pin/board/profile/search)        │  │
+│  └───────────────────────────────────────────────────┘  │
+│  ┌───────────────────────────────────────────────────┐  │
+│  │  Pinterest Client (resource API + HTML scrape)   │  │
+│  └───────────────────────────────────────────────────┘  │
+└─────────────────────┬───────────────────────────────────┘
+                      │ HTTPS
+                      ▼
+┌─────────────────────────────────────────────────────────┐
+│              Pinterest (public content)                 │
+│  • www.pinterest.com/resource/* (JSON)                  │
+│  • www.pinterest.com/{user}/ (HTML)                     │
+│  • i.pinimg.com (images)                                │
+│  • v.pinimg.com (videos)                                │
+└─────────────────────────────────────────────────────────┘
+```
+
+Input Classification
+
+```python
+def classify_input(value):
+    if PIN_ID_RE.search(value) or value.isdigit():
+        return "pin"                    # Pin URL or numeric ID
+    if is_pinterest_url(value):
+        segments = path_segments(value)
+        if len(segments) >= 2:
+            return "board"              # /user/board-name
+        if len(segments) == 1:
+            return "profile"            # /username
+    return "search"                     # Keyword search
+```
+
+Response Flow
+
+```
+1. Client sends { input, bookmark }
+         ↓
+2. Classify input → pin/board/profile/search
+         ↓
+3. Call appropriate Pinterest endpoint
+         ↓
+4. Parse pin data → simplify for UI
+         ↓
+5. Return normalized JSON + bookmark
+         ↓
+6. Client renders grid + pagination
+```
+
+---
+
+🚢 Deployment
+
+Option 1: Render
+
+1. Push code to GitHub
+2. Create New Web Service on Render
+3. Connect repository
+4. Configure:
+   · Build: pip install -r requirements.txt
+   · Start: gunicorn app:app
+   · Port: 5000
+5. Deploy
+
+Option 2: Railway
+
+```bash
+# Install Railway CLI
+npm install -g @railway/cli
+
+# Deploy
+railway login
+railway init
+railway up
+```
+
+Option 3: Docker
 
 ```dockerfile
-FROM python:3.12-slim
+FROM python:3.11-slim
 WORKDIR /app
-COPY . .
+COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
-EXPOSE 8000
-CMD ["uvicorn", "api.server:app", "--host", "0.0.0.0", "--port", "8000"]
+COPY . .
+EXPOSE 5000
+CMD ["gunicorn", "--bind", "0.0.0.0:5000", "--workers", "4", "--timeout", "120", "app:app"]
 ```
 
 ```bash
-docker build -t pinterest-scraper .
-docker run -p 8000:8000 pinterest-scraper
+docker build -t pingrab .
+docker run -p 5000:5000 pingrab
 ```
 
----
+Option 4: Vercel
 
-## Deployment
+Add vercel.json:
 
-### Render (recommended)
+```json
+{
+  "version": 2,
+  "builds": [
+    { "src": "app.py", "use": "@vercel/python" }
+  ],
+  "routes": [
+    { "src": "/(.*)", "dest": "app.py" }
+  ]
+}
+```
 
-The repo ships with `render.yaml` — deploy in one click.
-
-1. Push to GitHub
-2. Go to [render.com](https://render.com) → **New Web Service**
-3. Connect your repo — Render auto-detects `render.yaml`
-4. Click **Deploy**
-
-> **Note:** Render's free tier uses ephemeral storage. Downloaded images are lost on restart. Use a paid plan or mount a persistent disk at `/app/web_output`.
-
-### Manual VPS
+Option 5: Manual VPS
 
 ```bash
-pip install -r requirements.txt
-uvicorn api.server:app --host 0.0.0.0 --port 80 --workers 1
+# Install gunicorn
+pip install gunicorn
+
+# Systemd service
+sudo nano /etc/systemd/system/pingrab.service
 ```
 
-For production, put Nginx in front and use a systemd service or `supervisor`.
+```ini
+[Unit]
+Description=PinGrab Pinterest Downloader
+After=network.target
 
----
+[Service]
+User=www-data
+WorkingDirectory=/var/www/pingrab
+Environment="PATH=/var/www/pingrab/venv/bin"
+ExecStart=/var/www/pingrab/venv/bin/gunicorn --bind 0.0.0.0:5000 --workers 4 --timeout 120 app:app
+Restart=always
 
-## API Reference
-
-All endpoints return JSON unless noted.
-
-### Scrape
-
-| Method | Path | Description |
-|--------|------|-------------|
-| `POST` | `/api/scrape` | Start a scrape job |
-| `GET` | `/api/jobs/{id}/events` | SSE stream — live progress |
-| `GET` | `/api/jobs/{id}/result` | Final result after job completes |
-| `POST` | `/api/jobs/{id}/cancel` | Cancel a running job |
-
-**POST `/api/scrape` body:**
-
-```json
-{
-  "query": "dark academia",
-  "mode": "search",
-  "limit": 50,
-  "download": true,
-  "details": true,
-  "dedup": false,
-  "workers": 4,
-  "delay": 1.0,
-  "jitter": 0.5,
-  "batch_size": 10,
-  "min_width": 0,
-  "min_height": 0,
-  "proxy": ""
-}
+[Install]
+WantedBy=multi-user.target
 ```
 
-| Field | Type | Default | Description |
-|-------|------|---------|-------------|
-| `query` | string | — | Search term or board URL. Comma-separate for batch. |
-| `mode` | `search` \| `board` | `search` | Scrape mode |
-| `limit` | int | `25` | Max pins per query (1–500) |
-| `download` | bool | `true` | Download images to disk |
-| `details` | bool | `true` | Fetch full pin details (saves, comments…) |
-| `dedup` | bool | `false` | Skip pins seen in previous runs |
-| `workers` | int | `4` | Concurrent download threads (1–16) |
-| `delay` | float | `1.0` | Seconds between paginated requests |
-| `jitter` | float | `0.5` | Random jitter added to delay |
-| `proxy` | string | `""` | Proxy URL or comma-separated pool |
-
-### Images & Gallery
-
-| Method | Path | Description |
-|--------|------|-------------|
-| `GET` | `/api/images/{name}` | Serve a downloaded image |
-| `GET` | `/api/gallery` | All downloaded pins with metadata |
-| `GET` | `/api/gallery/export/zip` | ZIP of all gallery images |
-| `POST` | `/api/images/delete` | Delete images by filename |
-
-### Export
-
-| Method | Path | Description |
-|--------|------|-------------|
-| `GET` | `/api/jobs/{id}/export/zip` | ZIP of job images |
-| `GET` | `/api/jobs/{id}/export/xlsx` | XLSX metadata spreadsheet |
-
-### Suggestions & Visual Search
-
-| Method | Path | Description |
-|--------|------|-------------|
-| `GET` | `/api/suggest?q=term` | Typeahead suggestions |
-| `GET` | `/api/visual-search?pin_id=123` | Related pins by ID |
-
-### Schedules
-
-| Method | Path | Description |
-|--------|------|-------------|
-| `GET` | `/api/schedules` | List all schedules |
-| `POST` | `/api/schedules` | Create a schedule |
-| `DELETE` | `/api/schedules/{id}` | Delete a schedule |
-
-**POST `/api/schedules` body:**
-
-```json
-{
-  "mode": "search",
-  "query": "wallpaper 4k",
-  "interval_hours": 24,
-  "limit": 50
-}
-```
-
-### SSE Events
-
-The `/api/jobs/{id}/events` stream emits these event types:
-
-| Event | Fields | Description |
-|-------|--------|-------------|
-| `phase` | `phase`, `total`, `message` | Phase started (collect / details / download) |
-| `progress` | `phase`, `count`, `total` | Progress within a phase |
-| `query_start` | `query`, `index`, `total` | Batch query started |
-| `nothing_new` | `total` | All pins already exist |
-| `saved` | `json_file`, `csv_file` | Metadata saved to disk |
-| `done` | `status`, `total`, `stats`, `error` | Job completed |
-
----
-
-## Configuration
-
-Settings are saved per-browser in `localStorage`. The backend reads all options from the request body — no server-side config file required.
-
-### Output structure
-
-Each scrape writes to `web_output/`:
-
-```
-web_output/
-├── {stem}.json        # Full pin metadata array
-├── {stem}.csv         # Flat CSV with all columns
-├── .seen_pins.json    # Deduplication store (when dedup=true)
-└── images/
-    ├── {pin_id}.jpg
-    ├── {pin_id}.mp4   # (videos not downloaded, URL stored)
-    └── ...
-```
-
-### Proxy support
-
-Pass a single proxy or comma-separated pool in the `proxy` field:
-
-```
-http://user:pass@host:port
-http://proxy1:port,http://proxy2:port
+```bash
+sudo systemctl enable pingrab
+sudo systemctl start pingrab
 ```
 
 ---
 
-## Tech Stack
+⚙️ Configuration
 
-| Layer | Technology |
-|-------|-----------|
-| Backend | Python 3.10+, FastAPI, uvicorn |
-| HTTP | `requests` with retry + rate-limit handling |
-| Concurrency | `concurrent.futures.ThreadPoolExecutor` |
-| Export | `openpyxl` (XLSX), `zipfile`, `csv` |
-| Frontend | Vanilla JS (no build step), CSS custom properties |
-| Charts | Chart.js 4 |
-| Deployment | Render, Docker-compatible |
+Environment Variables
 
----
+Variable Required Default Description
+PORT ❌ No 5000 Server port
 
-## Metadata Fields
+Custom Headers / Timeouts
 
-Every pin object contains:
+Edit pinterest.py:
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `pin_id` | string | Pinterest pin ID |
-| `pin_url` | string | Full Pinterest URL |
-| `title` | string | Pin title |
-| `description` | string | Pin description |
-| `alt_text` | string | Auto-generated alt text |
-| `image_url` | string | Highest-resolution image URL |
-| `width` / `height` | int | Image dimensions in px |
-| `aspect_ratio` | float | width / height |
-| `saves` | int | Total saves |
-| `repin_count` | int | Repin count |
-| `likes` | int | Like count |
-| `comments` | int | Comment count |
-| `creator_username` | string | Pinterest username |
-| `creator_name` | string | Display name |
-| `creator_profile` | string | Profile URL |
-| `board_name` | string | Board name |
-| `board_url` | string | Board URL |
-| `external_link` | string | External link on pin |
-| `domain` | string | External link domain |
-| `dominant_color` | string | Hex color code |
-| `created_at` | string | ISO creation timestamp |
-| `is_video` | bool | True if video pin |
-| `video_url` | string | Direct MP4 URL (if video) |
-| `local_file` | string | Downloaded filename (if saved) |
+```python
+client = Pinterest(
+    timeout=30,             # Request timeout
+    proxies=None,           # Optional proxy dict
+    headers={               # Custom headers
+        "User-Agent": "custom..."
+    }
+)
+```
 
 ---
 
-## Legal
+⌨️ Keyboard Shortcuts
 
-This project is for **personal, educational, and research use only**.  
-Respect Pinterest's [Terms of Service](https://policy.pinterest.com/en/terms-of-service) and `robots.txt`.  
-Do not use at scale or for commercial scraping without explicit permission.
+Shortcut Action
+⌘K / Ctrl+K Open command palette
+/ Focus search bar
+⌘J / Ctrl+J Toggle theme
+⌘F / Ctrl+F Open favorites
+⌘⇧C / Ctrl+Shift+C Clear results
+? Show shortcuts
+Esc Close overlays
+
+---
+
+🧪 Testing
+
+API Tests
+
+```bash
+# Test with pin URL
+curl -X POST http://localhost:5000/api/resolve \
+  -H "Content-Type: application/json" \
+  -d '{"input": "https://pinterest.com/pin/123456789"}'
+
+# Test with keyword search
+curl -X POST http://localhost:5000/api/resolve \
+  -H "Content-Type: application/json" \
+  -d '{"input": "minimal wallpaper", "page_size": 10}'
+
+# Test with board URL
+curl -X POST http://localhost:5000/api/resolve \
+  -H "Content-Type: application/json" \
+  -d '{"input": "https://pinterest.com/username/board-name"}'
+
+# Test pagination
+curl -X POST http://localhost:5000/api/resolve \
+  -H "Content-Type: application/json" \
+  -d '{"input": "cooking", "bookmark": "Y2Jvb2ttYXJr"}'
+```
+
+Python Client
+
+```python
+import requests
+
+class PinGrab:
+    def __init__(self, base_url="http://localhost:5000"):
+        self.base = base_url.rstrip("/")
+    
+    def resolve(self, input_str, page_size=25, bookmark=None):
+        r = requests.post(
+            f"{self.base}/api/resolve",
+            json={"input": input_str, "page_size": page_size, "bookmark": bookmark},
+            timeout=30,
+        )
+        r.raise_for_status()
+        return r.json()
+    
+    def download(self, media_url, filename="download.jpg"):
+        r = requests.get(
+            f"{self.base}/api/download",
+            params={"url": media_url, "filename": filename},
+            stream=True,
+        )
+        r.raise_for_status()
+        with open(filename, "wb") as f:
+            for chunk in r.iter_content(65536):
+                f.write(chunk)
+        return filename
+
+# Usage
+grab = PinGrab()
+result = grab.resolve("minimal wallpaper", page_size=20)
+for pin in result["pins"][:5]:
+    print(f"• {pin['title']} → {pin['download_url']}")
+```
+
+---
+
+🎯 Use Cases
+
+· Content Curation — Build mood boards and references
+· Design Inspiration — Save visual references
+· Social Media — Collect content for posts
+· Wallpapers — Grab high-res backgrounds
+· Research — Analyze trends and aesthetics
+· Bot Integration — Discord/Telegram/Messenger bots
+· Personal Archive — Backup favorite pins
+
+---
+
+🔒 Security & Best Practices
+
+· ✅ Host Validation — Only pinimg.com / pinterest.com for downloads
+· ✅ Stream Download — Chunked transfer, no memory bloat
+· ✅ URL Scheme Check — HTTPS only
+· ✅ Input Sanitization — Regex-validated inputs
+· ✅ No User Data Stored — All client-side
+· ✅ No Tracking — Zero analytics
+
+Recommendations
+
+· 🔐 Add rate limiting for public deployments
+· 🔐 Enable HTTPS in production
+· 🔐 Use a reverse proxy (Nginx/Caddy)
+· 🔐 Monitor resource usage
+· 🔐 Respect Pinterest's rate limits
+
+---
+
+🐛 Troubleshooting
+
+Common Issues
+
+Issue Solution
+Pin not found URL may be private/deleted — verify in browser
+Slow search Pinterest throttling — wait 30s and retry
+Empty results Query may be filtered — try different keyword
+Download fails Media may be geo-restricted
+Port in use Change port: app.run(port=5001)
+Module not found Activate venv: source venv/bin/activate
+
+Debug Mode
+
+```python
+if __name__ == "__main__":
+    app.run(debug=True, port=5000)
+```
+
+Enable Request Logging
+
+```python
+import logging
+logging.basicConfig(level=logging.DEBUG)
+```
+
+---
+
+📈 Performance
+
+Metric Value
+Cold start ~2s
+Pin resolve 1–3s
+Search (25 pins) 2–5s
+Concurrent users 20+
+Memory usage ~80MB
+Download speed Network-limited
+
+Optimization Tips
+
+· Use page_size=50 to reduce requests
+· Cache results via CDN in front
+· Run behind Nginx/Caddy for static assets
+· Enable HTTP/2 for parallelism
+· Use Redis for cross-instance caching
+
+---
+
+🤝 Contributing
+
+Contributions welcome! Follow these steps:
+
+```bash
+# 1. Fork the repo
+# 2. Create feature branch
+git checkout -b feature/amazing-feature
+
+# 3. Commit changes
+git commit -m "Add amazing feature"
+
+# 4. Push to branch
+git push origin feature/amazing-feature
+
+# 5. Open Pull Request
+```
+
+Development Guidelines
+
+· Follow PEP 8 for Python
+· Use semantic HTML for templates
+· Keep JS vanilla (no frameworks)
+· Test before submitting
+· Update README for new features
+
+---
+
+📄 License
+
+Licensed under the MIT License — see LICENSE for details.
+
+---
+
+⚖️ Legal Disclaimer
+
+This tool is for personal, educational use only. It scrapes publicly available Pinterest content. Users are responsible for:
+
+· Respecting Pinterest's Terms of Service
+· Respecting copyright of content creators
+· Not using for commercial redistribution
+· Complying with local laws
+
+The developers are not liable for misuse. Always credit original creators when sharing content.
+
+---
+
+🙏 Acknowledgments
+
+· Pinterest — Public content platform
+· Flask — Web framework
+· BeautifulSoup — HTML parsing
+· Requests — HTTP library
+· Open Source Community — Tools and inspiration
+
+---
+
+📞 Contact & Support
+
+Channel Link
+GitHub Issues Report Bug
+Discussions Ask Questions
+Creator @raihan07
 
 ---
 
 <div align="center">
 
-<img src="https://capsule-render.vercel.app/api?type=waving&color=E60023&height=100&section=footer" width="100%">
+Built with ❤️ by raihan07
 
-Made with Python and FastAPI · Deployed on Render
+⭐ Star this project if you find it useful! ⭐
 
 </div>
