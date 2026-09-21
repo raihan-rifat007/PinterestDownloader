@@ -1352,10 +1352,10 @@ const LOGO = '/asset/Logo.png';
 
 const CONFIG = {
   storage: {
-    theme: 'pingrab.theme',
-    history: 'pingrab.history',
-    favorites: 'pingrab.favorites',
-    layout: 'pingrab.layout',
+    theme: 'pd.theme',
+    history: 'pd.history',
+    favorites: 'pd.favorites',
+    layout: 'pd.layout',
   },
   historyLimit: 20,
   resolveEndpoint: '/api/resolve',
@@ -1363,12 +1363,11 @@ const CONFIG = {
 };
 
 const HERO_TIPS = [
-  'https://pinterest.com/pin/123456789',
-  'minimal wallpaper',
-  'dark academia aesthetic',
-  'https://pinterest.com/username/board-name',
-  'taylor swift',
-  'interior design ideas',
+  'Try a Pinterest URL',
+  'Search keywords',
+  'Find boards',
+  'Download videos',
+  'Browse collections',
 ];
 
 const FILTERS = [
@@ -1769,7 +1768,13 @@ function buildCard(pin) {
   }
 
   card.addEventListener('click', (e) => {
-    if (e.target.closest('[data-download]') || e.target.closest('[data-fav]') || e.target.closest('a[target="_blank"]')) return;
+    if (e.target.closest('[data-fav]')) {
+      e.preventDefault();
+      e.stopPropagation();
+      toggleFavorite(pin);
+      return;
+    }
+    if (e.target.closest('[data-download]') || e.target.closest('a[target="_blank"]')) return;
     if (e.target.closest('[data-copy]')) {
       e.preventDefault();
       e.stopPropagation();
@@ -1778,12 +1783,6 @@ function buildCard(pin) {
         navigator.clipboard.writeText(url);
         toast('Link copied', 'success');
       }
-      return;
-    }
-    if (e.target.closest('[data-fav]')) {
-      e.preventDefault();
-      e.stopPropagation();
-      toggleFavorite(pin);
       return;
     }
     if (e.target.closest('[data-open]')) {
