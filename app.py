@@ -12,7 +12,6 @@ client = Pinterest(timeout=30)
 PIN_ID_RE = re.compile(r"/pin/(\d+)")
 PIN_SHORT_RE = re.compile(r"pin\.it/", re.IGNORECASE)
 
-
 def is_pinterest_url(value):
     try:
         parsed = urlparse(value)
@@ -23,9 +22,7 @@ def is_pinterest_url(value):
     host = (parsed.hostname or "").lower()
     return host == "pinterest.com" or host.endswith(".pinterest.com")
 
-
 ALLOWED_MEDIA_HOSTS = ("pinimg.com", "pinterest.com")
-
 
 def is_pinterest_media_url(value):
     try:
@@ -37,11 +34,9 @@ def is_pinterest_media_url(value):
     host = (parsed.hostname or "").lower()
     return any(host == h or host.endswith("." + h) for h in ALLOWED_MEDIA_HOSTS)
 
-
 def path_segments(value):
     parsed = urlparse(value)
     return [p for p in parsed.path.strip("/").split("/") if p]
-
 
 def classify_input(value):
     value = value.strip()
@@ -60,7 +55,6 @@ def classify_input(value):
             return "profile"
 
     return "search"
-
 
 def simplify_pin(pin):
     images = pin.get("images") or {}
@@ -101,16 +95,13 @@ def simplify_pin(pin):
         "filename": f"{pin.get('id')}{ext}",
     }
 
-
 @app.route("/")
 def index():
     return send_from_directory(app.static_folder or "static", "index.html")
 
-
 @app.route("/asset/<path:filename>")
 def serve_asset(filename):
     return send_from_directory(os.path.join(app.static_folder or "static", "asset"), filename)
-
 
 @app.route("/api/resolve", methods=["POST"])
 def resolve():
@@ -131,7 +122,6 @@ def resolve():
         return _dispatch(kind, value, page_size, bookmark)
     except Exception as exc:
         return jsonify({"ok": False, "error": f"Unexpected error: {exc}"}), 500
-
 
 def _dispatch(kind, value, page_size, bookmark):
     if kind == "pin":
@@ -184,7 +174,6 @@ def _dispatch(kind, value, page_size, bookmark):
         "bookmark": result.get("bookmark"),
     })
 
-
 @app.route("/api/download")
 def download():
     media_url = request.args.get("url")
@@ -214,7 +203,6 @@ def download():
         stream_with_context(upstream.iter_content(chunk_size=65536)),
         headers=headers,
     )
-
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))

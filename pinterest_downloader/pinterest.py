@@ -16,10 +16,8 @@ REACTION_LABELS = {
     "8": "thanks",
 }
 
-
 def _slugify(name):
     return str(name).lower().replace(" ", "-").replace("_", "-").strip("-")
-
 
 class Pinterest:
     DEFAULT_HEADERS = {
@@ -138,9 +136,6 @@ class Pinterest:
                 error = (resource_response.get("error") or {}).get("message")
             return False, error or "Unknown error"
         return True, resource_response
-
-
-
 
     def _parse_pin(self, pin_data, source_url=None):
         if not isinstance(pin_data, dict):
@@ -324,9 +319,6 @@ class Pinterest:
 
         return pin_obj
 
-
-
-
     def search(self, query, page_size=25, bookmark=None, scope="pins"):
         """Search for pins (scope="pins") or videos (scope="videos")."""
         if scope == "boards":
@@ -376,9 +368,6 @@ class Pinterest:
             if not bookmark:
                 break
         return {"ok": True, "query": query, "total": len(all_pins), "pins": all_pins}
-
-
-
 
     def _fetch_profile_page(self, username):
         """Fetch a profile page and pull the embedded user + boards data.
@@ -549,7 +538,6 @@ class Pinterest:
 
         if not board:
 
-
             ok, resource_response = self._api(
                 "BoardResource/get",
                 {"slug": board_slug, "username": username, "field_set_key": "board"},
@@ -590,9 +578,6 @@ class Pinterest:
             "board": board,
             "boards": boards
         })
-
-
-
 
     def _parse_board(self, board_data):
         """Parse a board dict (e.g. from search results) into a clean board."""
@@ -798,9 +783,6 @@ class Pinterest:
             "pins": pins
         })
 
-
-
-
     def _download_file(self, url, dest_dir, filename):
         try:
             os.makedirs(dest_dir, exist_ok=True)
@@ -900,9 +882,6 @@ class Pinterest:
             "files": files
         })
 
-
-
-
     def get_pin(self, url):
         pin_id = None
         m = re.search(r"/pin/(\d+)", str(url))
@@ -911,8 +890,6 @@ class Pinterest:
         elif re.fullmatch(r"\d+", str(url).strip()):
             pin_id = str(url).strip()
         else:
-
-
 
             for method in ("head", "get"):
                 try:
